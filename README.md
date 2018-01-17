@@ -1,36 +1,30 @@
 # mojave
 
-FIXME: description
+Get texts about how much of your day has passed. This tool assumes you're awake for 18 hours in the day.
 
-## Installation
+## Setup
 
-Download from http://example.com/FIXME.
+Set up a `mojave.json` file with the following keys:
 
-## Usage
+```json
+{
+  "number": "your_verizon_number",
+  "email": "your_email",
+  "password": "your_password",
+  "day_start_time": 27000
+}
+```
 
-FIXME: explanation
+`day_start_time` is in seconds.
 
-    $ java -jar mojave-0.1.0-standalone.jar [args]
+```
+$ lein uberjar
+$ java -jar target/uberjar/mojave-0.1.0-SNAPSHOT-standalone.jar mojave.json
+```
 
-## Options
-
-FIXME: listing of options this app accepts.
-
-## Examples
-
-...
-
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
+And you should get a text!
 
 ## License
-
-Copyright © 2018 FIXME
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.

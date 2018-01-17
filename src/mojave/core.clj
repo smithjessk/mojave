@@ -22,10 +22,19 @@
       {:from email
         :to [target]
         :subject "Hi!"
-        :body "Test..."})))
+        :body message})))
+
+(defn build-options
+  [props]
+    (let [current_seconds (.toSecondOfDay (java.time.LocalTime/now))]
+      (let [{:keys [day_start_time]} props]
+        (let [elapsed_seconds (- current_seconds day_start_time)]
+          (let [percent (double (/ elapsed_seconds (* 60 16 60)))]
+            (let [msg (clojure.string/join [percent "% of your day has passed"])]
+              (into props {:message msg})))))))
 
 (defn -main
   [& args]
   (printf "Using path %s for system properties%n" (first args))
   (let [p (load-props (first args))]
-    (send-email p)))
+    (send-email (build-options p))))
