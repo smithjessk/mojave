@@ -24,11 +24,11 @@ $ java -jar target/uberjar/mojave-0.1.0-SNAPSHOT-standalone.jar mojave.json
 
 And you should get a text!
 
-I have my `mojave` set up with `cron`:
+I have my `mojave` set up with `cron`. E.g.,
 
-` */5 8-23 * * * perl -le 'sleep rand 550' && java -jar $PATH_TO_JAR $PATH_TO_MOJAVE_DOT_JSON`
+` */10 8-23 * * * perl -le 'sleep rand 550' && java -jar $PATH_TO_JAR $PATH_TO_MOJAVE_DOT_JSON`
 
-This job runs every 5 minutes between 8 AM and midnight (exclusive upper bound). The `perl` line is to randomly spread out the distribution of the texts.
+This job runs every 10 minutes between 8 AM and midnight (exclusive upper bound). The `perl` line is to randomly spread out the distribution of the texts. I used 550 seconds as opposed to 600 so that I don't cross the midnight boundary. This is hacky and I plan to fix it soon.
 
 ## License
 
