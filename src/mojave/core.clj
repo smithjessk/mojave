@@ -1,27 +1,31 @@
 (ns mojave.core
   (:require postal.core)
   (:require clojure.java.io)
+  (:require clojure.string)
+  (:require [clojure.data.json :as json])
   (:gen-class))
 
-(defn -main
-  [& args]
-  (let [number (get-number args)
-    user (get-email args)
-    pass (get-password args)
-    message (get-message args)]
-    (printf "Texting phone number %s from email%n" number user)
+(defn load-props
+  [path]
+  (with-open [reader (clojure.java.io/reader path)]
+    (let [m (json/read reader)]
+      (into {} (for [[k, v] m] [(keyword k) v])))))
+
+(defn send-email
+  [{:keys [number email password message]}]
+  (printf "Texting phone number %s from email %s%n" number email)
+  (let [target (clojure.string/join [number "@vtext.com"])]
     (postal.core/send-message {:host "smtp.gmail.com"
-      :user user
-      :pass pass
+      :user email
+      :pass password
       :ssl true}
-      {:from (join [user "@gmail.com"])
-        :to (join [number "@vtext.com"])
+      {:from email
+        :to [target]
         :subject "Hi!"
         :body "Test..."})))
 
-(defn load-properties
-  [file-name]
-  (with-open [^java.io.Reader reader (clojure.java.io/reader file-name)]
-  (let [p (java.util.Properties.)]
-    (.load props reader)
-    (into {} (for [[k v] props] [(keyword k) (read-string v)])))))
+(defn -main
+  [& args]
+  (printf "Using path %s for system properties%n" (first args))
+  (let [p (load-props (first args))]
+    (send-email p)))
