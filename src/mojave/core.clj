@@ -29,7 +29,7 @@
     (let [current_seconds (.toSecondOfDay (java.time.LocalTime/now))]
       (let [{:keys [day_start_time]} props]
         (let [elapsed_seconds (- current_seconds day_start_time)]
-          (let [percent (double (/ elapsed_seconds (* 60 16 60)))]
+          (let [percent (* 100 (double (/ elapsed_seconds (* 60 16 60))))]
             (let [msg (clojure.string/join [percent "% of your day has passed"])]
               (into props {:message msg})))))))
 
